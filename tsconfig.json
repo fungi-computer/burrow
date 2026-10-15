@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "types": ["node", "vitest/globals", "@cloudflare/workers-types"]
+  },
+  "include": ["src", "test"]
+}

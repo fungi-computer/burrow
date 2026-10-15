@@ -1,0 +1,58 @@
+{
+  "expectedTarballFiles": [
+    "package/LICENSE",
+    "package/README.md",
+    "package/dist/artifacts.d.ts",
+    "package/dist/artifacts.js",
+    "package/dist/cloudflare.d.ts",
+    "package/dist/cloudflare.js",
+    "package/dist/index.d.ts",
+    "package/dist/index.js",
+    "package/dist/namespace.d.ts",
+    "package/dist/namespace.js",
+    "package/dist/rest.d.ts",
+    "package/dist/rest.js",
+    "package/docs/api/README.md",
+    "package/docs/api/cloudflare.md",
+    "package/docs/api/index.md",
+    "package/docs/api/namespace.md",
+    "package/docs/home.ts",
+    "package/package.json"
+  ],
+  "runtimeFixture": "test/stranger/runtime.mjs",
+  "typecheckFixture": "test/stranger/consumer.mts",
+  "docs": {
+    "sigil": "connected",
+    "home": {
+      "lead": "Cloudflare Artifacts repositories and Git transport, configured by your host with explicit metadata and token cleanup.",
+      "example": {
+        "file": "home.ts",
+        "title": "List repositories through a local provider",
+        "caption": "Use the REST namespace with a fake provider; no Cloudflare request or credential leaves the example."
+      },
+      "ladder": {
+        "start": [
+          {
+            "title": "Quickstart",
+            "href": "/quickstart/",
+            "description": "Configure the repository owner and its durable metadata store."
+          }
+        ],
+        "tasks": [
+          {
+            "title": "Use the REST transport",
+            "href": "/concepts/#rest-transport",
+            "description": "Supply the provider transport at the host boundary."
+          }
+        ],
+        "reference": [
+          {
+            "title": "API reference",
+            "href": "/api/",
+            "description": "Repository owner, provider namespace and metadata-store contracts."
+          }
+        ]
+      }
+    }
+  }
+}

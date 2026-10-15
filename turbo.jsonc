@@ -1,0 +1,8 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    // Strict stranger fixtures consume this package's emitted declarations.
+    "lint": { "dependsOn": ["build"] },
+  },
+}
