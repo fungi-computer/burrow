@@ -756,6 +756,7 @@ export function createCloudflareArtifacts(
       binding,
       repositories,
       destination,
+      gitHttp,
     );
     if (mainHead === null)
       throw new Error("Artifacts fork destination has no main commit");
@@ -810,6 +811,7 @@ export function createCloudflareArtifacts(
         binding,
         repositories,
         templateName,
+        gitHttp,
       );
       if (templateHead === null || templateHead !== input.expectedMainHead)
         throw new Error("Artifacts template main changed before fork");
@@ -842,6 +844,7 @@ export function createCloudflareArtifacts(
           binding,
           repositories,
           destination,
+          gitHttp,
         );
         if (mainHead === null)
           throw new Error("Artifacts fork destination has no main commit", {
@@ -867,6 +870,7 @@ export function createCloudflareArtifacts(
         binding,
         repositories,
         destination,
+        gitHttp,
       );
       if (mainHead === null || mainHead !== templateHead)
         throw new Error("Artifacts fork main does not match template main");

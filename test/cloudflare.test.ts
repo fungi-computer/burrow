@@ -1,6 +1,7 @@
 import { createServer } from "node:http";
 import type { AddressInfo } from "node:net";
 import { expect, it, vi } from "vitest";
+import http from "isomorphic-git/http/web";
 import {
   ArtifactsForkStuckError,
   createCloudflareArtifacts,
@@ -737,6 +738,66 @@ it("keeps an asynchronous fork pending until its handle is ready despite list la
     vi.unstubAllGlobals();
   }
 });
+
+it.each([false, true])(
+  "keeps fork creation, recovery and replay on the configured Git transport (concurrent: %s)",
+  async (concurrent) => {
+    const head = "a".repeat(40);
+    await withGitAdvertisement(
+      [{ ref: "refs/heads/main", oid: head }],
+      async (requests) => {
+        const fake = fakeNamespace();
+        const transported: string[] = [];
+        const artifacts = createCloudflareArtifacts({
+          namespace: fake.namespace,
+          repositories: fake.repositoriesStore,
+          gitHttp: {
+            request(input) {
+              const url = new URL(input.url);
+              transported.push(
+                `${input.method ?? "GET"} ${url.pathname}${url.search}`,
+              );
+              return http.request(input);
+            },
+          },
+        });
+        await artifacts.ensureRepository("template-app");
+        const input = {
+          template: "template-app",
+          repository: "team-app",
+          expectedMainHead: head,
+        };
+        const results = await Promise.all(
+          Array.from({ length: concurrent ? 2 : 1 }, () =>
+            artifacts.forkRepository(input),
+          ),
+        );
+        expect(results.map((result) => result.disposition).sort()).toEqual(
+          concurrent ? ["created", "existing"] : ["created"],
+        );
+        expect(
+          fake.calls.filter(
+            (call) => "operation" in call && call.operation === "fork",
+          ),
+        ).toHaveLength(concurrent ? 2 : 1);
+        await expect(
+          artifacts.recoverForkRepository(input),
+        ).resolves.toMatchObject({
+          mainHead: head,
+          disposition: "existing",
+        });
+        await expect(artifacts.forkRepository(input)).resolves.toMatchObject({
+          mainHead: head,
+          disposition: "existing",
+        });
+        expect(requests.length).toBeGreaterThan(2);
+        expect(transported.sort()).toEqual(
+          requests.map((request) => `${request.method} ${request.path}`).sort(),
+        );
+      },
+    );
+  },
+);
 
 it("exposes a typed stuck-fork result with the last provider status", () => {
   const error = new ArtifactsForkStuckError("team-app", "forking");
