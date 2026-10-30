@@ -1,6 +1,6 @@
 {
   "name": "@fungi.computer/burrow",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Levi <levi@technomancy.dev>",
   "description": "Configured Artifacts repository and Git protocol owner",
   "type": "module",

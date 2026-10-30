@@ -1,5 +1,13 @@
 # @fungi.computer/burrow
 
+## 0.2.0
+
+### Minor Changes
+
+- Changes since 0.1.0:
+
+  - feat(repository): scope docs-only gates
+
 ## 0.1.0
 
 ### Minor Changes
